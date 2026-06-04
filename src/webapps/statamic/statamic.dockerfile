@@ -27,7 +27,7 @@ ADD --link ./rootfs/ /
 ################################################################################
 # https://statamic.dev/installing
 ENV LARAVEL_ENABLE_SCHEDULER=1
-RUN env-default INITIAL_PROJECT "statamic/statamic"
+RUN env-default INITIAL_PROJECT "skploft/statamic"
 
 ################################################################################
 # https://statamic.dev/cli#artisan-vs-please
