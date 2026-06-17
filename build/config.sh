@@ -461,7 +461,10 @@ fi
 BUILD_TAG="${BUILD_TAGS%%,*}"
 
 [ -z "$BUILD_TAG_PREFIX" ] && expand_tags ":" ":dev-"
-[ "$PUBLISH_TO_GHCR" = "1" ] && expand_tags "$DEFAULT_REPO" "ghcr.io/${GITHUB_REPOSITORY_OWNER:-$DEFAULT_REPO}"
+[ "$PUBLISH_TO_GHCR" = "1" ] && {
+    GHCR_OWNER="${GITHUB_REPOSITORY_OWNER:-$DEFAULT_REPO}"
+    expand_tags "$DEFAULT_REPO" "ghcr.io/${GHCR_OWNER,,}"
+}
 
 if [ -n "$ARCHIVES_REPO" ] && [ -z "$BUILD_TAG_PREFIX" ]; then
     unique_id="$(date +%Y%m%d)"
