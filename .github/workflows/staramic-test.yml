@@ -22,11 +22,14 @@ on:
         required: false
         type: boolean
         default: false
-  workflow_dispatch:
-  workflow_run:
-    workflows: [Publish PHP Servers]
-    types:
-      - completed
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 ################################################################################
 ################################################################################
@@ -34,8 +37,7 @@ on:
 jobs:
 
   php-apps:
-    # See: https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run
-    if: ${{ github.event.workflow_run.conclusion == '' || github.event.workflow_run.conclusion == 'success' }}
+
     uses: ./.github/workflows/template-php.yml
     secrets: inherit
     strategy:
@@ -74,7 +76,7 @@ jobs:
       app_name: ${{ matrix.app }}
       server: ${{ matrix.server }}
       tag_prefix: ${{ inputs.tag_prefix }}
-      build_all: ${{ inputs.build_all }}
+      build_all: ${{ inputs.build_all || false }}
 
 ################################################################################
 ################################################################################
