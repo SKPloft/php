@@ -36,7 +36,30 @@ on:
 
 jobs:
 
+  prepare:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Warm up helper cache
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          . ./build/helpers.sh
+          mkdir -p /tmp/helper_cache
+          fetch_with_cache "https://api.github.com/repos/just-containers/s6-overlay/tags?per_page=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://api.github.com/repos/mlocati/docker-php-extension-installer/tags?per_page=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://api.github.com/repos/composer/composer/tags?per_page=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://registry.hub.docker.com/v2/repositories/library/debian/tags?&page_size=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://registry.hub.docker.com/v2/repositories/library/alpine/tags?&page_size=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://registry.hub.docker.com/v2/repositories/library/php/tags?&page_size=5" >/dev/null 2>&1 || true
+          fetch_with_cache "https://registry.hub.docker.com/v2/repositories/shinsenter/laravel/tags?&page_size=5" >/dev/null 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: helper_cache
+          path: /tmp/helper_cache/
+
   php-apps:
+    needs: [prepare]
 
     uses: ./.github/workflows/template-php.yml
     secrets: inherit
