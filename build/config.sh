@@ -468,6 +468,9 @@ if [ -n "$ARCHIVES_REPO" ] && [ -z "$BUILD_TAG_PREFIX" ]; then
     expand_tags "${DEFAULT_BUILD_NAME}:" "${ARCHIVES_REPO}:${unique_id}-" ":dev-"
 fi
 
+# Skip Docker Hub tags when pushing only to GHCR (fork mode)
+[ "$SKIP_DOCKER_HUB" = "1" ] && BUILD_TAGS="$(echo "$BUILD_TAGS" | tr ',' '\n' | grep '^ghcr.io/' | tr '\n' ',' | sed 's/,$//')"
+
 unset suffix SERVER_SUFFIX major unique_id
 
 ################################################################################

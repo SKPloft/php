@@ -41,13 +41,13 @@ on:
         required: false
         type: boolean
         default: false
-    secrets:
-      DOCKER_HUB_ACCESS_TOKEN:
-        required: true
-      DOCKER_HUB_USERNAME:
-        required: true
-      DOCKER_HUB_PASSWORD:
-        required: true
+ #   secrets:
+      #DOCKER_HUB_ACCESS_TOKEN:
+  #      required: true
+   #   DOCKER_HUB_USERNAME:
+    #    required: true
+     # DOCKER_HUB_PASSWORD:
+      #  required: true
 
 ################################################################################
 ################################################################################
@@ -67,6 +67,7 @@ jobs:
     env:
       ARCHIVES_REPO: "shinsenter/php-archives"
       MIRROR_REPO: ghcr.io/shinsenter
+      SKIP_DOCKER_HUB: "1"
       DOCKER_BUILD_RECORD_UPLOAD: false
       DOCKER_BUILD_SUMMARY: false
       DOCKER_BUILDKIT: "1"
