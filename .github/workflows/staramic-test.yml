@@ -8,6 +8,9 @@
 
 name: Publish Statamic
 
+# Image tags correspond to PHP version + OS variant (e.g. php8.5-alpine),
+# NOT the Statamic release version. The actual Statamic app code is
+# fetched via `composer create-project` on first container startup.
 ################################################################################
 ################################################################################
 
